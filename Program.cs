@@ -20,10 +20,64 @@ namespace CoreEscuela
             var reporteador = new Reporteador(engine.GetDiccionarioObjetos());
             var evalList = reporteador.GetListaEvaluaciones();
             var listaAsg = reporteador.GetListaAsignaturas();
-            var listaEvalXAsig=reporteador.GetDicEvaluXAsig();
-            var listaPromXAsig=reporteador.GetPromeAlumnoXAsignatura();
+            var listaEvalXAsig = reporteador.GetDicEvaluXAsig();
+            var listaPromXAsig = reporteador.GetPromeAlumnoXAsignatura();
             //New feature
-            var listTopXAlumnos=reporteador.GetTopXAlumnos(10);
+            var listTopXAlumnos = reporteador.GetTopXAlumnos(10);
+
+            Printer.WriteTitle("Captura de una Evaluación por Consola");
+            var newEval = new Evaluación();
+            string nombre, notaString;
+            float nota;
+            //
+            WriteLine("Ingrese el nombre de la evaluación >>");
+            Printer.PresioneEnter();
+            nombre = ReadLine();
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                Printer.WriteTitle("El valor del nombre no puede ser vacio");
+                WriteLine("Saliendo del programa");
+            }
+            else
+            {
+                newEval.Nombre = nombre.ToLower();
+                WriteLine("El nombre de la evaluación ha sido ingresado correctamente");
+            }
+
+            WriteLine("Ingrese la nota de la evaluación >>");
+            Printer.PresioneEnter();
+            notaString = ReadLine();
+            if (string.IsNullOrWhiteSpace(notaString))
+            {
+                Printer.WriteTitle("El valor de la nota no puede ser vacio");
+                WriteLine("Saliendo del programa");
+                //throw new ArgumentException("El valor de la nota no puede ser vacío");
+            }
+            else
+            {
+                try
+                {
+                    newEval.Nota = float.Parse(notaString);
+                    if(newEval.Nota<0 || newEval.Nota>20){
+                        throw new ArgumentOutOfRangeException("La nota debe estar entre 0 y 20");
+                    }
+                    WriteLine("La nota de la evaluación ha sido ingresado correctamente");
+                }
+                catch(ArgumentOutOfRangeException arge){
+                    Printer.WriteTitle(arge.Message);
+                    WriteLine("Saliendo del programa");
+                }
+                catch (Exception)
+                {
+                    Printer.WriteTitle("El valor de la nota no es un numero válido");
+                    WriteLine("Saliendo del programa");
+                }
+                finally{
+                    Printer.WriteTitle("FINALLY");
+                    Printer.Beep(2500,500,3);
+                }
+            }
+
         }
 
         private static void AccionDelEvento(object? sender, EventArgs e)

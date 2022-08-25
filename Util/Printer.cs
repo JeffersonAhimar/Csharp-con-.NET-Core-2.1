@@ -9,15 +9,20 @@ namespace CoreEscuela.Util
             WriteLine("".PadLeft(tam, '='));
         }
 
+        public static void PresioneEnter(int tam = 10)
+        {
+            WriteLine("Presione ENTER para continuar");
+        }
+
         public static void WriteTitle(string titulo)
         {
-            var tamaño =titulo.Length + 4;
+            var tamaño = titulo.Length + 4;
             DrawLine(tamaño);
             WriteLine($"| {titulo} |");
             DrawLine(tamaño);
         }
 
-        public static void Beep(int hz = 2000, int tiempo=500, int cantidad =1)
+        public static void Beep(int hz = 2000, int tiempo = 500, int cantidad = 1)
         {
             while (cantidad-- > 0)
             {
