@@ -4,7 +4,7 @@ using System.Linq;
 using CoreEscuela.Entidades;
 using CoreEscuela.Util;
 
-namespace CoreEscuela
+namespace CoreEscuela.App
 {
     public sealed class EscuelaEngine
     {
@@ -84,7 +84,7 @@ namespace CoreEscuela
 
             var diccionario = new Dictionary<LlavesDiccionario, IEnumerable<ObjetoEscuelaBase>>();
 
-            diccionario.Add(LlavesDiccionario.Escuela, new[] { Escuela });
+            // diccionario.Add(LlavesDiccionario.Escuela, new[] { Escuela });
             diccionario.Add(LlavesDiccionario.Curso, Escuela.Cursos.Cast<ObjetoEscuelaBase>());
 
             var listatmp = new List<Evaluación>();
