@@ -16,6 +16,11 @@ namespace CoreEscuela
             Printer.Beep(10000, cantidad: 1);
             ImpimirCursosEscuela(engine.Escuela);
             var listaObjetos=engine.GetObjetosEscuela();
+
+            var listaIlugar=from obj in listaObjetos
+                            where obj is ILugar
+                            select (ILugar)obj;
+            // engine.Escuela.LimpiarLugar();
         }
 
         private static void ImpimirCursosEscuela(Escuela escuela)
