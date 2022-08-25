@@ -60,6 +60,7 @@ namespace CoreEscuela.App
             }
             return dicRta;
         }
+
         public Dictionary<string, IEnumerable<Object>> GetPromeAlumnoXAsignatura()
         {
             var rta = new Dictionary<string, IEnumerable<Object>>();
@@ -68,19 +69,49 @@ namespace CoreEscuela.App
             foreach (var asigConEval in dicEvalXAsig)
             {
                 var promAlumnos = from eval in asigConEval.Value
-                            group eval by new{
-                                eval.Alumno.UniqueId,
-                                eval.Alumno.Nombre}
+                                  group eval by new
+                                  {
+                                      eval.Alumno.UniqueId,
+                                      eval.Alumno.Nombre
+                                  }
                             into grupoEvalsAlumno
-                            select new AlumnoPromedio
-                            {
-                                alumnoId = grupoEvalsAlumno.Key.UniqueId,
-                                alumnoNombre = grupoEvalsAlumno.Key.Nombre,
-                                promedio = grupoEvalsAlumno.Average(evaluacion => evaluacion.Nota)
-                            };
-                rta.Add(asigConEval.Key,promAlumnos);
+                                  select new AlumnoPromedio
+                                  {
+                                      alumnoId = grupoEvalsAlumno.Key.UniqueId,
+                                      alumnoNombre = grupoEvalsAlumno.Key.Nombre,
+                                      promedio = grupoEvalsAlumno.Average(evaluacion => evaluacion.Nota)
+                                  };
+                rta.Add(asigConEval.Key, promAlumnos);
             }
             return rta;
         }
+
+        public Dictionary<string, IEnumerable<Object>> GetTopXAlumnos(int top)
+        {
+            var rta = new Dictionary<string, IEnumerable<Object>>();
+            var dicEvalXAsig = GetDicEvaluXAsig();
+
+            foreach (var asigConEval in dicEvalXAsig)
+            {
+                var promAlumnos =
+                            (from eval in asigConEval.Value
+                             group eval by new
+                             {
+                                 eval.Alumno.UniqueId,
+                                 eval.Alumno.Nombre
+                             }
+                            into grupoEvalsAlumno
+                             orderby grupoEvalsAlumno.Average(evaluacion => evaluacion.Nota) descending
+                             select new AlumnoPromedio
+                             {
+                                 alumnoId = grupoEvalsAlumno.Key.UniqueId,
+                                 alumnoNombre = grupoEvalsAlumno.Key.Nombre,
+                                 promedio = grupoEvalsAlumno.Average(evaluacion => evaluacion.Nota)
+                             }).Take(top);
+                rta.Add(asigConEval.Key, promAlumnos);
+            }
+            return rta;
+        }
+
     }
 }
